@@ -4,41 +4,26 @@
   hosts: all
   become: yes
   tasks:
-    - name: Check if Docker is installed
-      command: docker --version
-      register: docker_installed
-      ignore_errors: true
-
-    - name: Install system packages
-      apt:
-        name:
-          - apt-transport-https
-          - ca-certificates
-          - curl
-          - gnupg-agent
-          - software-properties-common
-        state: present
-        update_cache: yes
-      when: docker_installed.rc != 0
+    - name: Remove Docker GPG key
+      apt_key:
+        id: 0EBFCD88
+        state: absent
 
     - name: Add Docker GPG key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
-      when: docker_installed.rc != 0
 
     - name: Add Docker repository
       apt_repository:
         repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
         state: present
-      when: docker_installed.rc != 0
 
     - name: Install Docker
       apt:
         name: docker-ce
         state: present
         update_cache: yes
-      when: docker_installed.rc != 0
 
     - name: Add Docker Compose binary
       get_url:
