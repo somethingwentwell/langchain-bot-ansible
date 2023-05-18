@@ -23,7 +23,7 @@ jobs:
       run: pip install ansible
 
     - name: Run Ansible Playbook
-      run: ansible-playbook -i "${VM_NAME_VAR}.${VM_NAME_VAR}.cloudapp.azure.com", ansible_playbook.yml -u ${{ secrets.USERNAME }} --ask-pass --extra-vars "ansible_ssh_pass=${{ secrets.PASSWORD }}"
+      run: ansible-playbook -i "${VM_NAME_VAR}.${LOCATION_VAR}.cloudapp.azure.com", ansible_playbook.yml -u ${{ secrets.USERNAME }} --ask-pass --extra-vars "ansible_ssh_pass=${{ secrets.PASSWORD }}"
       # run: ansible-playbook -i ${{ secrets.SSH_IP }}, ansible_playbook.yml -u ${{ secrets.USERNAME }} --ask-pass --extra-vars "ansible_ssh_pass=${{ secrets.PASSWORD }}"
       env:
         ANSIBLE_HOST_KEY_CHECKING: 'False'
