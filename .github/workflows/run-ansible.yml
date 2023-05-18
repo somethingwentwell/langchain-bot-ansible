@@ -1,6 +1,11 @@
-name: Deploy FastAPI App
+name: Deploy Azure OpenAI Langchain Bot
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Azure VM Deployment"]
+    types:
+      - completed
 
 env:
   VM_NAME_VAR: ${{ vars.VM_NAME }}
