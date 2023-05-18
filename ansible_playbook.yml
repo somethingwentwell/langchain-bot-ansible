@@ -1,0 +1,36 @@
+---
+- name: Deploy FastAPI App
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install system packages
+      apt:
+        name:
+          - docker.io
+          - docker-compose
+          - python3-pip
+        state: present
+        update_cache: yes
+
+    - name: Install Python packages
+      pip:
+        name:
+          - fastapi
+          - uvicorn
+          - typing
+          - pydantic
+          - python-dotenv
+          - psycopg2
+        executable: pip3
+
+    - name: Clone the GitHub repository
+      git:
+        repo: 'https://github.com/somethingwentwell/azure-openai-langchain-bot.git'
+        dest: /opt/azure-openai-langchain-bot
+
+    - name: Start FastAPI app
+      shell: |
+        cd /opt/azure-openai-langchain-bot
+        uvicorn adminapi:app --host 0.0.0.0 --port 8000
+      args:
+        executable: /bin/bash
