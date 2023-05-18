@@ -86,6 +86,6 @@
     - name: Start FastAPI app
       shell: |
         cd /opt/azure-openai-langchain-bot
-        uvicorn adminapi:app --host 0.0.0.0 --port 8100
+        nohup uvicorn adminapi:app --host 0.0.0.0 --port 8100 --reload &
       args:
         executable: /bin/bash
