@@ -49,6 +49,9 @@
       pip:
         name: docker
         executable: pip3
+        
+    - name: Start DB
+      command: docker-compose -f /opt/azure-openai-langchain-bot/docker-compose-db.yml up -d
 
 - name: Deploy FastAPI App
   hosts: all
@@ -70,10 +73,18 @@
       git:
         repo: 'https://github.com/somethingwentwell/azure-openai-langchain-bot.git'
         dest: /opt/azure-openai-langchain-bot
+        
+    - name: Wait for DB to be up
+      wait_for:
+        host: localhost
+        port: 5432
+        delay: 5
+        timeout: 300
+        state: started
 
     - name: Start FastAPI app
       shell: |
         cd /opt/azure-openai-langchain-bot
-        uvicorn adminapi:app --host 0.0.0.0 --port 8000
+        uvicorn adminapi:app --host 0.0.0.0 --port 8100
       args:
         executable: /bin/bash
