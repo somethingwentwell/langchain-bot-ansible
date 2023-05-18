@@ -1,0 +1,54 @@
+name: Azure VM Deployment
+
+on: workflow_dispatch
+
+env:
+  VM_NAME_VAR: ${{ vars.VM_NAME }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Create resource group
+      env:
+        LOCATION_VAR: ${{ vars.LOCATION }}
+      run: |
+        az group create --name $VM_NAME_VAR --location $LOCATION_VAR
+
+    - name: Create VM
+      run: |
+        az vm create \
+          --resource-group $VM_NAME_VAR \
+          --name $VM_NAME_VAR \
+          --image Ubuntu2204 \
+          --size Standard_B2s \
+          --admin-username ${{ secrets.SSH_USER }} \
+          --admin-password ${{ secrets.SSH_PASSWORD }} \
+          --public-ip-sku Standard \
+          --public-ip-address-dns-name $VM_NAME_VAR \
+          --public-ip-address-allocation static \
+          --nsg-rule SSH
+
+    - name: Open ports
+      run: |
+        az vm open-port --port 22 --priority 310 --resource-group $VM_NAME_VAR --name $VM_NAME_VAR
+        az vm open-port --port 80 --priority 320 --resource-group $VM_NAME_VAR --name $VM_NAME_VAR
+        az vm open-port --port 443 --priority 330 --resource-group $VM_NAME_VAR --name $VM_NAME_VAR
+        az vm open-port --port 8000 --priority 340 --resource-group $VM_NAME_VAR --name $VM_NAME_VAR
+        az vm open-port --port 8100 --priority 350 --resource-group $VM_NAME_VAR --name $VM_NAME_VAR
+
+    - name: Save VM IP to variable
+      run: |
+        echo "VM_IP=$(az vm show -d -g $VM_NAME_VAR -n $VM_NAME_VAR --query publicIps -o tsv)" >> $GITHUB_ENV
+
+    - name: Show VM IP
+      run: |
+        echo "${{ env.VM_IP }}"

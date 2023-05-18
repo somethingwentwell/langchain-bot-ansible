@@ -1,0 +1,29 @@
+name: Deploy FastAPI App
+
+on: workflow_dispatch
+
+env:
+  VM_NAME_VAR: ${{ vars.VM_NAME }}
+  LOCATION_VAR: ${{ vars.LOCATION }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+
+    - name: Install Ansible
+      run: pip install ansible
+
+    - name: Run Ansible Playbook
+      run: ansible-playbook -i "${VM_NAME_VAR}.${VM_NAME_VAR}.cloudapp.azure.com", ansible_playbook.yml -u ${{ secrets.USERNAME }} --ask-pass --extra-vars "ansible_ssh_pass=${{ secrets.PASSWORD }}"
+      # run: ansible-playbook -i ${{ secrets.SSH_IP }}, ansible_playbook.yml -u ${{ secrets.USERNAME }} --ask-pass --extra-vars "ansible_ssh_pass=${{ secrets.PASSWORD }}"
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: 'False'
