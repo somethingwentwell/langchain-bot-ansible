@@ -4,10 +4,17 @@
   hosts: all
   become: yes
   tasks:
-    - name: Remove Docker GPG key
-      apt_key:
-        id: 0EBFCD88
-        state: absent
+
+  - name: Install Dependency
+        apt:
+          state: present
+          update_cache: yes
+        loop:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg-agent
+          - software-properties-common
 
     - name: Add Docker GPG key
       apt_key:
@@ -16,7 +23,7 @@
 
     - name: Add Docker repository
       apt_repository:
-        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
         state: present
 
     - name: Install Docker
