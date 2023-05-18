@@ -66,6 +66,7 @@
           - typing
           - pydantic
           - python-dotenv
+          - python-multipart
           - psycopg2-binary
         executable: pip3
 
