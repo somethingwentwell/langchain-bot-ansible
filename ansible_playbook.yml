@@ -49,9 +49,6 @@
       pip:
         name: docker
         executable: pip3
-        
-    - name: Start DB
-      command: docker-compose -f /opt/azure-openai-langchain-bot/docker-compose-db.yml up -d
 
 - name: Deploy FastAPI App
   hosts: all
@@ -74,6 +71,9 @@
       git:
         repo: 'https://github.com/somethingwentwell/azure-openai-langchain-bot.git'
         dest: /opt/azure-openai-langchain-bot
+
+    - name: Start DB
+      command: docker-compose -f /opt/azure-openai-langchain-bot/docker-compose-db.yml up -d
         
     - name: Wait for DB to be up
       wait_for:
