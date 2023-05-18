@@ -31,3 +31,7 @@ jobs:
       run: ansible-playbook -i "${VM_NAME_VAR}.${LOCATION_VAR}.cloudapp.azure.com", ansible_playbook.yml -u ${{ secrets.SSH_USER }} --ask-pass --extra-vars "ansible_ssh_pass=${{ secrets.SSH_PASSWORD }}"
       env:
         ANSIBLE_HOST_KEY_CHECKING: 'False'
+
+    - name: Show API Docs
+      run: |
+        echo "${VM_NAME_VAR}.${LOCATION_VAR}.cloudapp.azure.com:8100/docs"
