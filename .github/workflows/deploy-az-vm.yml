@@ -39,7 +39,6 @@ jobs:
 
     - name: Open ports
       run: |
-        az vm open-port --port 22 --priority 310 --resource-group $VM_NAME_VAR --name $VM_NAME_VAR
         az vm open-port --port 80 --priority 320 --resource-group $VM_NAME_VAR --name $VM_NAME_VAR
         az vm open-port --port 443 --priority 330 --resource-group $VM_NAME_VAR --name $VM_NAME_VAR
         az vm open-port --port 8000 --priority 340 --resource-group $VM_NAME_VAR --name $VM_NAME_VAR
