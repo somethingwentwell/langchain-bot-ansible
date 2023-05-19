@@ -91,12 +91,7 @@
         executable: /bin/bash
 
 - name: Deploy Admin UI
-  apt:
-    name: nodejs
-    state: present
-    update_cache: yes
-    install_recommends: no
-  become: yes
+  hosts: all
   environment:
     DEBIAN_FRONTEND: noninteractive
   vars:
