@@ -90,6 +90,14 @@
       args:
         executable: /bin/bash
 
+    - name: Install Node.js and npm
+      apt:
+        name:
+          - nodejs
+          - npm
+        state: present
+        update_cache: yes
+
     - name: Clone the Admin UI GitHub repository
       git:
         repo: 'https://github.com/somethingwentwell/langchain-bot-admin-ui.git'
