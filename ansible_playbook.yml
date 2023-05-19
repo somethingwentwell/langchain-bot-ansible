@@ -92,6 +92,8 @@
 
 - name: Deploy Admin UI
   hosts: all
+  become: yes
+  tasks:
     - name: Install Node.js 18.x
       shell: |
         curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
