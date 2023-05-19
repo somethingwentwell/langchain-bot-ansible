@@ -4,6 +4,7 @@ on: workflow_dispatch
 
 env:
   VM_NAME_VAR: ${{ vars.VM_NAME }}
+  VM_SIZE: Standard_D2as_v4
 
 jobs:
   deploy:
@@ -28,7 +29,7 @@ jobs:
         az vm create \
           --resource-group $VM_NAME_VAR \
           --name $VM_NAME_VAR \
-          --image Ubuntu2204 \
+          --image $VM_SIZE \
           --size Standard_B2s \
           --admin-username ${{ secrets.SSH_USER }} \
           --admin-password ${{ secrets.SSH_PASSWORD }} \
