@@ -29,8 +29,8 @@ jobs:
         az vm create \
           --resource-group $VM_NAME_VAR \
           --name $VM_NAME_VAR \
-          --image $VM_SIZE \
-          --size Standard_B2s \
+          --image Ubuntu2204 \
+          --size $VM_SIZE \
           --admin-username ${{ secrets.SSH_USER }} \
           --admin-password ${{ secrets.SSH_PASSWORD }} \
           --public-ip-sku Standard \
