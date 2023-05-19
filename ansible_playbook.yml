@@ -94,12 +94,6 @@
   hosts: all
   become: yes
   tasks:
-    - name: Remove libnode-dev package
-      apt:
-        state: absent
-        loop:
-          - libnode-dev
-          - libnode72
 
     - name: Install Node.js 18.x
       shell: |
