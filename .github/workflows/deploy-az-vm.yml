@@ -44,6 +44,7 @@ jobs:
         az vm open-port --port 443 --priority 330 --resource-group $VM_NAME_VAR --name $VM_NAME_VAR
         az vm open-port --port 8000 --priority 340 --resource-group $VM_NAME_VAR --name $VM_NAME_VAR
         az vm open-port --port 8100 --priority 350 --resource-group $VM_NAME_VAR --name $VM_NAME_VAR
+        az vm open-port --port 8080 --priority 360 --resource-group $VM_NAME_VAR --name $VM_NAME_VAR
 
     - name: Save VM IP to variable
       run: |
