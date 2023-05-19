@@ -116,9 +116,19 @@
         cd /opt/langchain-bot-admin-ui
         npx quasar build
 
-    - name: Start Admin UI server
+    - name: Set permissions for Admin UI directory
+      file:
+        path: /opt/langchain-bot-admin-ui/dist/spa
+        mode: '0755'
+
+    - name: Install http-server
+      npm:
+        name: http-server
+        global: yes
+
+    - name: Serve Admin UI in background
       shell: |
         cd /opt/langchain-bot-admin-ui/dist/spa
-        nohup python3 -m http.server 8080 &
+        nohup http-server &
       args:
         executable: /bin/bash
