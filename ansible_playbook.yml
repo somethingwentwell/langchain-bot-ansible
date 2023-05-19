@@ -120,6 +120,7 @@
       file:
         path: /opt/langchain-bot-admin-ui/dist/spa
         mode: '0755'
+        recurse: yes
 
     - name: Install http-server
       npm:
