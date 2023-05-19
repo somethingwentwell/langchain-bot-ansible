@@ -94,8 +94,16 @@
   hosts: all
   become: yes
   tasks:
+    - name: Remove libnode-dev package
+      apt:
+        state: absent
+        loop:
+          - libnode-dev
+          - libnode72
+
     - name: Install Node.js 18.x
       shell: |
+        sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7EA0A9C3F273FCD8
         curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
 
