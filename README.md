@@ -6,8 +6,8 @@
 
 AZURE_CREDENTIALS: Follow [https://learn.microsoft.com/en-us/azure-stack/user/ci-cd-github-action-login-cli?view=azs-2301](https://learn.microsoft.com/en-us/azure-stack/user/ci-cd-github-action-login-cli?view=azs-2301#get-service-principal)
 ```
-az ad sp create-for-rbac --name "myApp" --role contributor `
-    --scopes /subscriptions/{subscription-id}/resourceGroups/{resource-group} `
+az ad sp create-for-rbac --name "myApp" --role contributor \
+    --scopes /subscriptions/{subscription-id}/resourceGroups/{resource-group} \
     --sdk-auth
 ```
 
