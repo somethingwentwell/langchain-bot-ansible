@@ -89,3 +89,25 @@
         nohup uvicorn adminapi:app --host 0.0.0.0 --port 8100 --reload &
       args:
         executable: /bin/bash
+
+    - name: Clone the Admin UI GitHub repository
+      git:
+        repo: 'https://github.com/somethingwentwell/langchain-bot-admin-ui.git'
+        dest: /opt/langchain-bot-admin-ui
+
+    - name: Install Admin UI dependencies
+      shell: |
+        cd /opt/langchain-bot-admin-ui
+        npm install
+
+    - name: Build Admin UI
+      shell: |
+        cd /opt/langchain-bot-admin-ui
+        npx quasar build
+
+    - name: Start Admin UI server
+      shell: |
+        cd /opt/langchain-bot-admin-ui/dist/spa
+        nohup python3 -m http.server 8080 &
+      args:
+        executable: /bin/bash
