@@ -35,4 +35,6 @@ jobs:
     - name: Show API Docs
       run: |
         echo "API docs: ${VM_NAME_VAR}.${LOCATION_VAR}.cloudapp.azure.com:8100/docs"
-        echo "Admin Portal: ${VM_NAME_VAR}.${LOCATION_VAR}.cloudapp.azure.com:8080"
+        echo "Admin Portal: https://insourceportal.github.io"
+        echo "Set Admin API URL to: ${VM_NAME_VAR}.${LOCATION_VAR}.cloudapp.azure.com:8100"
+        echo "Set Chat API URL to: ${VM_NAME_VAR}.${LOCATION_VAR}.cloudapp.azure.com:80"
