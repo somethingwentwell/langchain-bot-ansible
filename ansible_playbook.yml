@@ -72,6 +72,16 @@
         repo: 'https://github.com/somethingwentwell/azure-openai-langchain-bot.git'
         dest: /opt/azure-openai-langchain-bot
 
+    - name: Write ENV_FILE to .env file
+      lineinfile:
+        path: /opt/azure-openai-langchain-bot/.env
+        line: "ENV_FILE={{ ENV_FILE }}"
+        create: yes
+
+    - name: cat .env
+      shell: |
+        cat /opt/azure-openai-langchain-bot/.env
+
     - name: Start DB
       command: docker-compose -f /opt/azure-openai-langchain-bot/docker-compose-db.yml up -d
         
