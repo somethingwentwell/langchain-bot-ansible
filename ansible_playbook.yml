@@ -95,46 +95,46 @@
       args:
         executable: /bin/bash
 
-# - name: Deploy Admin UI
-#   hosts: all
-#   become: yes
-#   tasks:
+- name: Deploy Admin UI
+  hosts: all
+  become: yes
+  tasks:
 
-#     - name: Install Node.js 18.x
-#       shell: |
-#         sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7EA0A9C3F273FCD8
-#         curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-#         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
+    - name: Install Node.js 18.x
+      shell: |
+        sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7EA0A9C3F273FCD8
+        curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
 
-#     - name: Clone the Admin UI GitHub repository
-#       git:
-#         repo: 'https://github.com/somethingwentwell/langchain-bot-admin-ui.git'
-#         dest: /opt/langchain-bot-admin-ui
+    - name: Clone the Admin UI GitHub repository
+      git:
+        repo: 'https://github.com/somethingwentwell/langchain-bot-admin-ui.git'
+        dest: /opt/langchain-bot-admin-ui
 
-#     - name: Install Admin UI dependencies
-#       shell: |
-#         cd /opt/langchain-bot-admin-ui
-#         npm install
+    - name: Install Admin UI dependencies
+      shell: |
+        cd /opt/langchain-bot-admin-ui
+        npm install
 
-#     - name: Build Admin UI
-#       shell: |
-#         cd /opt/langchain-bot-admin-ui
-#         npx quasar build
+    - name: Build Admin UI
+      shell: |
+        cd /opt/langchain-bot-admin-ui
+        npx quasar build
 
-#     - name: Set permissions for Admin UI directory
-#       file:
-#         path: /opt/langchain-bot-admin-ui/dist/spa
-#         mode: '0755'
-#         recurse: yes
+    - name: Set permissions for Admin UI directory
+      file:
+        path: /opt/langchain-bot-admin-ui/dist/spa
+        mode: '0755'
+        recurse: yes
 
-#     - name: Install http-server
-#       npm:
-#         name: http-server
-#         global: yes
+    - name: Install http-server
+      npm:
+        name: http-server
+        global: yes
 
-#     - name: Serve Admin UI in background
-#       shell: |
-#         cd /opt/langchain-bot-admin-ui/dist/spa
-#         nohup http-server &
-#       args:
-#         executable: /bin/bash
+    - name: Serve Admin UI in background
+      shell: |
+        cd /opt/langchain-bot-admin-ui/dist/spa
+        nohup http-server &
+      args:
+        executable: /bin/bash
