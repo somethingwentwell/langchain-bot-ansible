@@ -1,105 +1,105 @@
 ---
 
-- name: Install Docker and Docker Compose
-  hosts: all
-  become: yes
-  tasks:
+# - name: Install Docker and Docker Compose
+#   hosts: all
+#   become: yes
+#   tasks:
 
-    - name: Install Dependency
-      apt:
-        state: present
-        update_cache: yes
-      loop:
-        - apt-transport-https
-        - ca-certificates
-        - curl
-        - gnupg-agent
-        - software-properties-common
+#     - name: Install Dependency
+#       apt:
+#         state: present
+#         update_cache: yes
+#       loop:
+#         - apt-transport-https
+#         - ca-certificates
+#         - curl
+#         - gnupg-agent
+#         - software-properties-common
 
-    - name: Add Docker GPG key
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
+#     - name: Add Docker GPG key
+#       apt_key:
+#         url: https://download.docker.com/linux/ubuntu/gpg
+#         state: present
 
-    - name: Add Docker repository
-      apt_repository:
-        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
-        state: present
+#     - name: Add Docker repository
+#       apt_repository:
+#         repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+#         state: present
 
-    - name: Install Docker
-      apt:
-        name: docker-ce
-        state: present
-        update_cache: yes
+#     - name: Install Docker
+#       apt:
+#         name: docker-ce
+#         state: present
+#         update_cache: yes
 
-    - name: Add Docker Compose binary
-      get_url:
-        url: https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-Linux-x86_64
-        dest: /usr/local/bin/docker-compose
-        mode: 'a+x'
+#     - name: Add Docker Compose binary
+#       get_url:
+#         url: https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-Linux-x86_64
+#         dest: /usr/local/bin/docker-compose
+#         mode: 'a+x'
 
-    - name: Install Python packages
-      apt:
-        name:
-          - python3-pip
-        state: present
-        update_cache: yes
+#     - name: Install Python packages
+#       apt:
+#         name:
+#           - python3-pip
+#         state: present
+#         update_cache: yes
 
-    - name: Install Docker Python module
-      pip:
-        name: docker
-        executable: pip3
+#     - name: Install Docker Python module
+#       pip:
+#         name: docker
+#         executable: pip3
 
-- name: Deploy LC App
-  hosts: all
-  become: yes
-  tasks:
+# - name: Deploy LC App
+#   hosts: all
+#   become: yes
+#   tasks:
 
-    - name: Install Python packages
-      pip:
-        name:
-          - fastapi
-          - uvicorn
-          - typing
-          - pydantic
-          - python-dotenv
-          - python-multipart
-          - psycopg2-binary
-        executable: pip3
+#     - name: Install Python packages
+#       pip:
+#         name:
+#           - fastapi
+#           - uvicorn
+#           - typing
+#           - pydantic
+#           - python-dotenv
+#           - python-multipart
+#           - psycopg2-binary
+#         executable: pip3
 
-    - name: Clone the GitHub repository
-      git:
-        repo: 'https://github.com/somethingwentwell/azure-openai-langchain-bot.git'
-        dest: /opt/azure-openai-langchain-bot
+#     - name: Clone the GitHub repository
+#       git:
+#         repo: 'https://github.com/somethingwentwell/azure-openai-langchain-bot.git'
+#         dest: /opt/azure-openai-langchain-bot
 
-    - name: Write ENV_FILE to .env file
-      copy:
-        content: "{{ ENV_FILE }}"
-        dest: /opt/azure-openai-langchain-bot/.env
+#     - name: Write ENV_FILE to .env file
+#       copy:
+#         content: "{{ ENV_FILE }}"
+#         dest: /opt/azure-openai-langchain-bot/.env
 
-    - name: Start DB
-      command: docker-compose -f /opt/azure-openai-langchain-bot/docker-compose-db.yml up -d
+#     - name: Start DB
+#       command: docker-compose -f /opt/azure-openai-langchain-bot/docker-compose-db.yml up -d
         
-    - name: Wait for DB to be up
-      wait_for:
-        host: localhost
-        port: 5432
-        delay: 5
-        timeout: 300
-        state: started
+#     - name: Wait for DB to be up
+#       wait_for:
+#         host: localhost
+#         port: 5432
+#         delay: 5
+#         timeout: 300
+#         state: started
 
-    - name: Start Service
-      shell: |
-        cd /opt/azure-openai-langchain-bot/
-        docker-compose up -d
+#     - name: Start Service
+#       shell: |
+#         cd /opt/azure-openai-langchain-bot/
+#         docker-compose up -d
 
-    - name: Start Admin API
-      shell: |
-        cd /opt/azure-openai-langchain-bot
-        if sudo lsof -t -i tcp:8100; then sudo lsof -t -i tcp:8100 | sudo xargs kill -9; fi
-        nohup uvicorn adminapi:app --host 0.0.0.0 --port 8100 --reload &
-      args:
-        executable: /bin/bash
+#     - name: Start Admin API
+#       shell: |
+#         cd /opt/azure-openai-langchain-bot
+#         if sudo lsof -t -i tcp:8100; then sudo lsof -t -i tcp:8100 | sudo xargs kill -9; fi
+#         nohup uvicorn adminapi:app --host 0.0.0.0 --port 8100 --reload &
+#       args:
+#         executable: /bin/bash
 
 - name: Deploy Admin UI
   hosts: all
