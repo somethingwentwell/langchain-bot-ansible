@@ -96,10 +96,17 @@
     - name: Start Admin API
       shell: |
         cd /opt/azure-openai-langchain-bot
-        if sudo lsof -t -i tcp:8100; then sudo lsof -t -i tcp:8100 | sudo xargs kill -9; fi
         nohup uvicorn adminapi:app --host 0.0.0.0 --port 8100 --reload &
       args:
         executable: /bin/bash
+
+    # - name: Start Admin API
+    #   shell: |
+    #     cd /opt/azure-openai-langchain-bot
+    #     if sudo lsof -t -i tcp:8100; then sudo lsof -t -i tcp:8100 | sudo xargs kill -9; fi
+    #     nohup uvicorn adminapi:app --host 0.0.0.0 --port 8100 --reload &
+    #   args:
+    #     executable: /bin/bash
 
 - name: Deploy Admin UI
   hosts: all
