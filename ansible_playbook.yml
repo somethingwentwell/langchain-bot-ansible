@@ -131,5 +131,5 @@
     - name: Run Admin UI
       shell: |
         cd /opt/langchain-bot-admin-ui
-        if sudo lsof -t -i tcp:8080; then sudo lsof -t -i tcp:8080 | sudo xargs kill -9; fi
-        sudo ADMIN_URL="${URL}:8100" CHAT_URL="${URL}:8000" nohup quasar serve dist/spa -p 8080 &
+        if lsof -t -i tcp:8080; then sudo lsof -t -i tcp:8080 | xargs kill -9; fi
+        ADMIN_URL="${URL}:8100" CHAT_URL="${URL}:8000" nohup quasar serve dist/spa -p 8080 &
