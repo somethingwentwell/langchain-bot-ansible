@@ -36,5 +36,5 @@ jobs:
 
     - name: URL
       run: |
-        echo "Admin Portal: http://${VM_NAME_VAR}.${LOCATION_VAR}.cloudapp.azure.com:8100"
+        echo "Admin Portal: http://${VM_NAME_VAR}.${LOCATION_VAR}.cloudapp.azure.com:8080"
         echo "API docs: http://${VM_NAME_VAR}.${LOCATION_VAR}.cloudapp.azure.com:8100/docs"
