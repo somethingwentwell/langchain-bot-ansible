@@ -121,17 +121,13 @@
       shell: |
         cd /opt/langchain-bot-admin-ui
         npm install
+        npm i -g @quasar/cli 
 
     - name: Build Admin UI
       shell: |
         cd /opt/langchain-bot-admin-ui
-        ADMIN_URL="http://${URL}:8100" CHAT_URL="http://${URL}:8000" npx quasar build
+        ADMIN_URL="http://${URL}:8100" CHAT_URL="http://${URL}:8000" quasar build
 
-    - name: Build UI container
+    - name: Run Admin UI
       shell: |
-        cd /opt/langchain-bot-admin-ui/
-        docker build . -t langchain-bot-admin-ui
-
-    - name: Run UI container
-      shell: |
-        docker run -d -p 8080:80 --name admin-ui langchain-bot-admin-ui
+        ADMIN_URL=http://warren-test-0001.southeastasia.cloudapp.azure.com:8100 CHAT_URL=http://warren-test-0001.southeastasia.cloudapp.azure.com:8000 quasar serve dist/spa -p 8080
