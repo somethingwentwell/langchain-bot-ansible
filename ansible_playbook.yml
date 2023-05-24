@@ -127,4 +127,4 @@
     - name: Run Admin UI
       shell: |
         cd /opt/langchain-bot-admin-ui
-        docker run -d -p 8080:4000 --name admin-ui -e HOST_URL=$HOST_URL langchain-bot-admin-ui
+        docker run -d -p 8080:4000 --name admin-ui langchain-bot-admin-ui
