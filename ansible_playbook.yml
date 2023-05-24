@@ -119,7 +119,7 @@
 
     - name: Build Admin UI
       environment:
-        HOST_URL: {{ HOST_URL }}
+        HOST_URL: "{{ HOST_URL }}"
       shell: |
         cd /opt/langchain-bot-admin-ui
         docker build --build-arg HOST_URL=$HOST_URL . -t langchain-bot-admin-ui
