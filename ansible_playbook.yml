@@ -120,9 +120,9 @@
     - name: Build Admin UI
       shell: |
         cd /opt/langchain-bot-admin-ui
-        docker build --build-arg HOST_URL=$HOST_URL . -t langchain-bot-admin-ui
+        docker build --build-arg HOST_URL=http://warren-test-0001.southeastasia.cloudapp.azure.com . -t langchain-bot-admin-ui
 
     - name: Run Admin UI
       shell: |
         cd /opt/langchain-bot-admin-ui
-        docker run -d -p 8080:4000 --name admin-ui langchain-bot-admin-ui
+        docker run -d -p 8080:4000 --name admin-ui -e HOST_URL=$HOST_URL langchain-bot-admin-ui
