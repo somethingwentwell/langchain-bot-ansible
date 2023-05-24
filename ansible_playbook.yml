@@ -117,19 +117,12 @@
         repo: 'https://github.com/somethingwentwell/langchain-bot-admin-ui.git'
         dest: /opt/langchain-bot-admin-ui
 
-    - name: Install Admin UI dependencies
-      shell: |
-        cd /opt/langchain-bot-admin-ui
-        npm install
-        npm i -g @quasar/cli 
-
     - name: Build Admin UI
       shell: |
         cd /opt/langchain-bot-admin-ui
-        ADMIN_URL="${URL}:8100" CHAT_URL="${URL}:8000" quasar build
+        docker build --build-arg HOST_URL=${URL} . -t langchain-bot-admin-ui
 
     - name: Run Admin UI
       shell: |
         cd /opt/langchain-bot-admin-ui
-        if lsof -t -i tcp:8080; then sudo lsof -t -i tcp:8080 | xargs kill -9; fi
-        ADMIN_URL="${URL}:8100" CHAT_URL="${URL}:8000" nohup quasar serve dist/spa -p 8080 &
+        docker run -d -p 8080:4000 --name admin-ui langchain-bot-admin-ui
