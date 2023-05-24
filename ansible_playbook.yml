@@ -50,13 +50,6 @@
         name: docker
         executable: pip3
 
-    - name: Add all users to docker group
-      user:
-        name: "{{ item }}"
-        groups: docker
-        append: yes
-      loop: "{{ query('all_users') }}"
-
 - name: Deploy FastAPI App
   hosts: all
   become: yes
@@ -95,9 +88,13 @@
         timeout: 300
         state: started
 
-    - name: Start FastAPI app
+    - name: Start Service
+      command: docker-compose up -d
+
+    - name: Start Admin API
       shell: |
         cd /opt/azure-openai-langchain-bot
+        if sudo lsof -t -i tcp:8100; then sudo lsof -t -i tcp:8100 | sudo xargs kill -9; fi
         nohup uvicorn adminapi:app --host 0.0.0.0 --port 8100 --reload &
       args:
         executable: /bin/bash
