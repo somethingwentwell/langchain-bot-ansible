@@ -50,7 +50,7 @@
         name: docker
         executable: pip3
 
-- name: Deploy FastAPI App
+- name: Deploy LC App
   hosts: all
   become: yes
   tasks:
@@ -126,8 +126,10 @@
     - name: Build Admin UI
       shell: |
         cd /opt/langchain-bot-admin-ui
-        ADMIN_URL="http://${URL}:8100" CHAT_URL="http://${URL}:8000" quasar build
+        ADMIN_URL="${URL}:8100" CHAT_URL="${URL}:8000" quasar build
 
     - name: Run Admin UI
       shell: |
-        ADMIN_URL=http://warren-test-0001.southeastasia.cloudapp.azure.com:8100 CHAT_URL=http://warren-test-0001.southeastasia.cloudapp.azure.com:8000 quasar serve dist/spa -p 8080
+        cd /opt/langchain-bot-admin-ui
+        if sudo lsof -t -i tcp:8080; then sudo lsof -t -i tcp:8080 | sudo xargs kill -9; fi
+        sudo ADMIN_URL="${URL}:8100" CHAT_URL="${URL}:8000" nohup quasar serve dist/spa -p 8080 &
