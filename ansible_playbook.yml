@@ -119,22 +119,13 @@
     - name: Build Admin UI
       shell: |
         cd /opt/langchain-bot-admin-ui
-        npx quasar build
+        ADMIN_URL=http://${URL}:8100 CHAT_URL=http://${URL}:8000 npx quasar build
 
-    - name: Set permissions for Admin UI directory
-      file:
-        path: /opt/langchain-bot-admin-ui/dist/spa
-        mode: '0755'
-        recurse: yes
-
-    - name: Install http-server
-      npm:
-        name: http-server
-        global: yes
-
-    - name: Serve Admin UI in background
+    - name: Build UI container
       shell: |
-        cd /opt/langchain-bot-admin-ui/dist/spa
-        nohup http-server &
-      args:
-        executable: /bin/bash
+        cd /opt/langchain-bot-admin-ui/
+        docker build . -t langchain-bot-admin-ui
+
+    - name: Run UI container
+      shell: |
+        docker run -d -p 8080:80 --name admin-ui langchain-bot-admin-ui
