@@ -32,9 +32,7 @@ jobs:
       env:
         ANSIBLE_HOST_KEY_CHECKING: 'False'
 
-    - name: Show API Docs
+    - name: URL
       run: |
-        echo "API docs: ${VM_NAME_VAR}.${LOCATION_VAR}.cloudapp.azure.com:8100/docs"
-        echo "Admin Portal: https://insourceportal.github.io"
-        echo "Set Admin API URL to: ${VM_NAME_VAR}.${LOCATION_VAR}.cloudapp.azure.com:8100"
-        echo "Set Chat API URL to: ${VM_NAME_VAR}.${LOCATION_VAR}.cloudapp.azure.com:80"
+        echo "Admin Portal: http://${VM_NAME_VAR}.${LOCATION_VAR}.cloudapp.azure.com:8100"
+        echo "API docs: http://${VM_NAME_VAR}.${LOCATION_VAR}.cloudapp.azure.com:8100/docs"
