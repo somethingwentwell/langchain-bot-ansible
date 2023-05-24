@@ -89,7 +89,9 @@
         state: started
 
     - name: Start Service
-      command: docker-compose up -d
+      shell: |
+        cd /opt/azure-openai-langchain-bot/
+        docker-compose up -d
 
     - name: Start Admin API
       shell: |
