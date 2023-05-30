@@ -55,17 +55,17 @@
   become: yes
   tasks:
 
-    - name: Install Python packages
-      pip:
-        name:
-          - fastapi
-          - uvicorn
-          - typing
-          - pydantic
-          - python-dotenv
-          - python-multipart
-          - psycopg2-binary
-        executable: pip3
+    # - name: Install Python packages
+    #   pip:
+    #     name:
+    #       - fastapi
+    #       - uvicorn
+    #       - typing
+    #       - pydantic
+    #       - python-dotenv
+    #       - python-multipart
+    #       - psycopg2-binary
+    #     executable: pip3
 
     - name: Clone the GitHub repository
       git:
@@ -93,12 +93,12 @@
         cd /opt/azure-openai-langchain-bot/
         docker-compose up -d
 
-    - name: Start Admin API
-      shell: |
-        cd /opt/azure-openai-langchain-bot
-        nohup uvicorn adminapi:app --host 0.0.0.0 --port 8100 --reload &
-      args:
-        executable: /bin/bash
+    # - name: Start Admin API
+    #   shell: |
+    #     cd /opt/azure-openai-langchain-bot
+    #     nohup uvicorn adminapi:app --host 0.0.0.0 --port 8100 --reload &
+    #   args:
+    #     executable: /bin/bash
 
     # - name: Start Admin API
     #   shell: |
