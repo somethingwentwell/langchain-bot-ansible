@@ -20,7 +20,6 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Create resource group
-      env:
       run: |
         az group create --name $VM_NAME_VAR --location $LOCATION_VAR
 
