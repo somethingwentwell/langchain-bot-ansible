@@ -56,7 +56,7 @@ jobs:
 
     - name: Create Azure Bot Service
       run: |
-        az bot create --kind registration --name $VM_NAME_VAR --resource-group $VM_NAME_VAR --sku S0 --location $LOCATION_VAR --appid $(grep 'MicrosoftAppId' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --password $(grep 'MicrosoftAppPassword' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --tenant-id $(grep 'MicrosoftAppTenantId' ${{ secrets.ENVFILE }} | cut -d '=' -f2)
+        az bot create --kind registration --name $VM_NAME_VAR --resource-group $VM_NAME_VAR --sku S1 --location $LOCATION_VAR --appid $(grep 'MicrosoftAppId' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --password $(grep 'MicrosoftAppPassword' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --tenant-id $(grep 'MicrosoftAppTenantId' ${{ secrets.ENVFILE }} | cut -d '=' -f2)
 
     - name: Enable Teams channel
       run: |
