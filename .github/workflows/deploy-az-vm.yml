@@ -4,6 +4,7 @@ on: workflow_dispatch
 
 env:
   VM_NAME_VAR: ${{ vars.VM_NAME }}
+  LOCATION_VAR: ${{ vars.LOCATION }}
   VM_SIZE: Standard_D2as_v4
 
 jobs:
@@ -20,7 +21,6 @@ jobs:
 
     - name: Create resource group
       env:
-        LOCATION_VAR: ${{ vars.LOCATION }}
       run: |
         az group create --name $VM_NAME_VAR --location $LOCATION_VAR
 
@@ -54,12 +54,9 @@ jobs:
       run: |
         echo "${{ env.VM_IP }}"
 
-    - name: Create Azure Bot Service
+    - name: Create Azure Bot Service and Enable Teams Channel
       run: |
         az bot create --kind registration --name $VM_NAME_VAR --resource-group $VM_NAME_VAR --sku S1 --location $LOCATION_VAR --appid $(grep 'MicrosoftAppId' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --password $(grep 'MicrosoftAppPassword' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --tenant-id $(grep 'MicrosoftAppTenantId' ${{ secrets.ENVFILE }} | cut -d '=' -f2)
-
-    - name: Enable Teams channel
-      run: |
         az bot msteams create --name $VM_NAME_VAR --resource-group $VM_NAME_VAR --client-id $(grep 'MicrosoftAppId' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --client-secret $(grep 'MicrosoftAppPassword' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --tenant-id $(grep 'MicrosoftAppTenantId' ${{ secrets.ENVFILE }} | cut -d '=' -f2)
         echo ${{ secrets.ENVFILE }}
         
