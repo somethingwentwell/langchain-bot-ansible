@@ -53,3 +53,19 @@ jobs:
     - name: Show VM IP
       run: |
         echo "${{ env.VM_IP }}"
+
+    - name: Create Azure Bot Service
+      run: |
+        az bot create --kind registration --name $VM_NAME_VAR --resource-group $VM_NAME_VAR --sku S0 --location $LOCATION_VAR --appid $(grep 'MicrosoftAppId' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --password $(grep 'MicrosoftAppPassword' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --tenant-id $(grep 'MicrosoftAppTenantId' ${{ secrets.ENVFILE }} | cut -d '=' -f2)
+
+      - name: Enable Teams channel
+        run: |
+          az bot msteams create --name $VM_NAME_VAR --resource-group $VM_NAME_VAR --client-id $(grep 'MicrosoftAppId' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --client-secret $(grep 'MicrosoftAppPassword' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --tenant-id $(grep 'MicrosoftAppTenantId' ${{ secrets.ENVFILE }} | cut -d '=' -f2)
+          echo ${{ secrets.ENVFILE }}
+          
+      - name: Echo bot Teams link
+        run: |
+          echo "Teams link: https://teams.microsoft.com/l/chat/0/0?users=${{ env.VM_IP }}&topicName=${{ env.VM_NAME_VAR }}-bot"
+
+
+
