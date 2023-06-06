@@ -55,9 +55,12 @@ jobs:
 
     - name: Create Azure Bot Service and Enable Teams Channel
       run: |
-        az bot create --kind registration --name $VM_NAME_VAR --resource-group $VM_NAME_VAR --sku S1 --location $LOCATION_VAR --appid $(grep 'MicrosoftAppId' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --password $(grep 'MicrosoftAppPassword' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --tenant-id $(grep 'MicrosoftAppTenantId' ${{ secrets.ENVFILE }} | cut -d '=' -f2)
-        az bot msteams create --name $VM_NAME_VAR --resource-group $VM_NAME_VAR --client-id $(grep 'MicrosoftAppId' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --client-secret $(grep 'MicrosoftAppPassword' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --tenant-id $(grep 'MicrosoftAppTenantId' ${{ secrets.ENVFILE }} | cut -d '=' -f2)
-        echo ${{ secrets.ENVFILE }}
+        az ad app create --display-name $VM_NAME_VAR --password $(grep 'MicrosoftAppPassword' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --available-to-other-tenants true --reply-urls "https://token.botframework.com/.auth/web/redirect" --oauth2-allow-implicit-flow true
+        APP_ID=$(az ad app list --display-name $VM_NAME_VAR --query [].appId -o tsv)
+        az ad sp create --id $APP_ID
+        TENANT_ID=$(az ad sp show --id $APP_ID --query appOwnerTenantId -o tsv)
+        az bot create --kind registration --name $VM_NAME_VAR --resource-group $VM_NAME_VAR --sku S1 --location $LOCATION_VAR --appid $APP_ID --password $(grep 'MicrosoftAppPassword' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --tenant-id $TENANT_ID
+        az bot msteams create --name $VM_NAME_VAR --resource-group $VM_NAME_VAR --client-id $APP_ID --client-secret $(grep 'MicrosoftAppPassword' ${{ secrets.ENVFILE }} | cut -d '=' -f2) --tenant-id $TENANT_ID
         
     - name: Echo bot Teams link
       run: |
